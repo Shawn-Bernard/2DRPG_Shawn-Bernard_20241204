@@ -11,8 +11,10 @@ public class Enemy : MonoBehaviour
     public TileBase wallTile;
     public TileBase enemyTile;
     Vector3Int enemyPosition;
-    int x = 5;
-    int y = 5;
+    int enemyX = 5;
+    int enemyY = 5;
+    public int[,] EnemyZone = new int [4,4];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,47 +24,61 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemyPosition = new Vector3Int(x,y);
-        if (Player.player.Turn == false )
+        
+        if (Player.player.Turn == false)
         {
-            int randomDirection = Random.RandomRange(0, 5);
+            enemyPosition = new Vector3Int(enemyX, enemyY);
+            int randomDirection = Random.RandomRange(0, 4);
             switch (randomDirection)
             {
                 case 0:
                     MyTileMap.SwapTile(enemyTile, groundTile);
-                    y++;
+                    enemyY++;
                     MyTileMap.SetTile(enemyPosition, enemyTile);
                     break;
                 case 1:
                     MyTileMap.SwapTile(enemyTile, groundTile);
-                    x--;
+                    enemyX--;
                     MyTileMap.SetTile(enemyPosition, enemyTile);
                     break;
                 case 2:
                     MyTileMap.SwapTile(enemyTile, groundTile);
-                    y--;
+                    enemyY--;
                     MyTileMap.SetTile(enemyPosition, enemyTile);
                     break;
                 case 3:
                     MyTileMap.SwapTile(enemyTile, groundTile);
-                    y++;
+                    enemyX++;
                     MyTileMap.SetTile(enemyPosition, enemyTile);
                     break;
-
             }
+            
             Player.player.Turn = true;
+            Debug.Log($"Enemy Position{enemyPosition}");
+            Range(enemyX, enemyY);
         }
-        else
-        {
-            Debug.Log("true");
-        }
-        Debug.Log(MyTileMap.GetSprite(new Vector3Int(1, 1, 0)));
-        if(MyTileMap.GetSprite(new Vector3Int(x, y, 0)) == Playertile)
-        {
 
+    }
+    void Range(int x, int y)
+    {
+        EnemyZone = new int[x, y];
+        for (int check_x = x - 1; check_x <= x + 1; check_x++)
+        {
+            if (check_x >= 0 && check_x < EnemyZone.GetLength(0))
+            {
+                for (int check_y = y - 1; check_y <= y + 1; check_y++)
+                {
+                    if (check_y >= 0 && check_y < EnemyZone.GetLength(1))
+                    {
+                        if (check_x == Player.player.x && check_y == Player.player.y)
+                        {
+                            Debug.Log($"playerX{Player.player.x}|playerY{Player.player.y}");
+                        }
+                        Debug.Log($"[X{x}] [Y{y}]");
+                        Debug.Log($"[CheckX{check_x}] [CheckY{check_y}]");
+                    }
+                }
+            }
         }
     }
-
-
-
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.IO;
+using UnityEditor.U2D.Aseprite;
 
 public class MapGeneration : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class MapGeneration : MonoBehaviour
     public TileBase groundTile;
     public TileBase wallTile;
     string tile;
-
+    public static MapGeneration Map;
+    public string Path = $"{Application.dataPath}/Map/LevelOne.txt";
 
 
 
@@ -19,8 +21,8 @@ public class MapGeneration : MonoBehaviour
     void Start()
     {
         TryGetComponent<Tilemap>(out MyTileMap);
-        LoadPremadeMap($"{Application.dataPath}/Map/LevelOne.txt");
-
+        LoadPremadeMap(Path);
+        Map = this;
 
     }
 
@@ -29,7 +31,11 @@ public class MapGeneration : MonoBehaviour
     {
 
     }
-    public void ConvertMapToTilemap(string mapData)
+    public void boom(string[] Map)
+    {
+
+    }
+    public string[] ConvertMapToTilemap(string mapData)
     {
         string[] Map = mapData.Split("\n");
         char tile;
@@ -48,17 +54,18 @@ public class MapGeneration : MonoBehaviour
                 {
                     MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
                 }
-
             }
         }
+        return Map;
+
     }
-    void LoadPremadeMap(string Path)
+    public void LoadPremadeMap(string Path)
     {
 
         if (File.Exists(Path))
         {
             string mapData = File.ReadAllText(Path);
-            ConvertMapToTilemap(mapData);
+            boom(ConvertMapToTilemap(mapData));
         }
     }
 
