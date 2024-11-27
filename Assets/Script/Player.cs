@@ -12,9 +12,10 @@ public class Player : MonoBehaviour
     public TileBase groundTile;
     public TileBase wallTile;
     public static Player player;
-
+    public bool Turn = true;
+    Vector3Int PlayerPosition;
     int x =1;
-    int y =1;
+    int y =1 ;
 
     // Start is called before the first frame update
     void Start()
@@ -29,43 +30,52 @@ public class Player : MonoBehaviour
     }
     void Controller()
     {
-        MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
-        if (Input.GetKeyDown(KeyCode.W) && MyTileMap.GetTile(new Vector3Int(x, y+1, 0)) == groundTile)
+        PlayerPosition = new Vector3Int(x , y,0);
+        MyTileMap.SetTile(PlayerPosition, Playertile);
+        if (Turn == true)
         {
-            if (true)
+
+            if (Input.GetKeyDown(KeyCode.W) && MyTileMap.GetTile(new Vector3Int(x, y + 1, 0)) == groundTile)
             {
-                MyTileMap.SwapTile(Playertile, groundTile);
-                y++;
-                MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                Turn = false;
+                if (true)
+                {
+                    MyTileMap.SwapTile(Playertile, groundTile);
+                    y++;
+                    MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                }
+                //MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
             }
-            MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
-        }
-        else if (Input.GetKeyDown(KeyCode.A) && MyTileMap.GetTile(new Vector3Int(x-1, y, 0)) == groundTile)
-        {
-            if (true)
+            else if (Input.GetKeyDown(KeyCode.A) && MyTileMap.GetTile(new Vector3Int(x - 1, y, 0)) == groundTile)
             {
-                MyTileMap.SwapTile(Playertile, groundTile);
-                x--;
-                MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                Turn = false;
+                if (true)
+                {
+                    MyTileMap.SwapTile(Playertile, groundTile);
+                    x--;
+                    MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                }
+                //MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
             }
-            MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
-        }
-        else if (Input.GetKeyDown(KeyCode.S) && MyTileMap.GetTile(new Vector3Int(x, y-1, 0)) == groundTile)
-        {
-            if (true)
+            else if (Input.GetKeyDown(KeyCode.S) && MyTileMap.GetTile(new Vector3Int(x, y - 1, 0)) == groundTile)
             {
-                MyTileMap.SwapTile(Playertile, groundTile);
-                y--;
-                MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                Turn = false;
+                if (true)
+                {
+                    MyTileMap.SwapTile(Playertile, groundTile);
+                    y--;
+                    MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.D) && MyTileMap.GetTile(new Vector3Int(x + 1, y, 0)) == groundTile)
-        {
-            if (true)
+            else if (Input.GetKeyDown(KeyCode.D) && MyTileMap.GetTile(new Vector3Int(x + 1, y, 0)) == groundTile)
             {
-                MyTileMap.SwapTile(Playertile, groundTile);
-                x++;
-                MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                Turn = false;
+                if (true)
+                {
+                    MyTileMap.SwapTile(Playertile, groundTile);
+                    x++;
+                    MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                }
             }
         }
     }

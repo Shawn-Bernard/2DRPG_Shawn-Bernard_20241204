@@ -366,7 +366,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183955669}
   m_Enabled: 1
-  m_CellSize: {x: 1, y: 1, z: 1}
+  m_CellSize: {x: 1, y: 0.9, z: 1}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -585,6 +585,7 @@ MonoBehaviour:
   Playertile: {fileID: 11400000, guid: 410c5dd7fe60bf547b8d97c1758b45f3, type: 2}
   groundTile: {fileID: 11400000, guid: cc0d5c4c233ee5b4da9aecdadedae806, type: 2}
   wallTile: {fileID: 11400000, guid: 1f9a7584d44b146449703f355991e49a, type: 2}
+  Turn: 0
 --- !u!114 &1310306610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,6 +617,7 @@ MonoBehaviour:
   Playertile: {fileID: 11400000, guid: 410c5dd7fe60bf547b8d97c1758b45f3, type: 2}
   groundTile: {fileID: 11400000, guid: cc0d5c4c233ee5b4da9aecdadedae806, type: 2}
   wallTile: {fileID: 11400000, guid: 1f9a7584d44b146449703f355991e49a, type: 2}
+  enemyTile: {fileID: 11400000, guid: 12a2da2278f70a34fabf01a7056d8b7c, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
