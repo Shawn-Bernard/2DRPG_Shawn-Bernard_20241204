@@ -7,13 +7,19 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
+    public HealthSystem healthSystem = new HealthSystem();
+
     public Tilemap MyTileMap;
     public TileBase Playertile;
-    public static Player player;
-    public bool Turn = true;
     public Vector3Int PlayerPosition;
+
     public int x =1;
     public int y =1;
+    int Damage = 20;
+
+    public bool Turn = true;
+
+    public static Player player;
 
     // Start is called before the first frame update
     void Start()
@@ -41,14 +47,25 @@ public class Player : MonoBehaviour
             Debug.Log("Can't move to this tile");
             return false;
         }
+        else if (MyTileMap.GetTile(checkPosition) == Enemy.enemy.enemyTile)
+        {
+            healthSystem.TakeDamage(Damage);
+            return false;
+        }
+
         checkPosition.z = 1;
+
         //Swapping my player tile to the check tile
         MyTileMap.SwapTile(Playertile, checkTile);
+
         //Making my player position equal to check position
         PlayerPosition = checkPosition;
+
         //Placing my player tile at the new position and placing player
         MyTileMap.SetTile(PlayerPosition,Playertile);
+
         Debug.Log(PlayerPosition);
+        Debug.Log(healthSystem.health);
         return true;
     }
     void Controller()
