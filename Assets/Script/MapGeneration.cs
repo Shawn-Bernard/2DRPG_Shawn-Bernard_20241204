@@ -31,11 +31,7 @@ public class MapGeneration : MonoBehaviour
     {
 
     }
-    public void boom(string[] Map)
-    {
-
-    }
-    public string[] ConvertMapToTilemap(string mapData)
+    public void ConvertMapToTilemap(string mapData)
     {
         string[] Map = mapData.Split("\n");
         char tile;
@@ -56,7 +52,6 @@ public class MapGeneration : MonoBehaviour
                 }
             }
         }
-        return Map;
 
     }
     public void LoadPremadeMap(string Path)
@@ -65,7 +60,7 @@ public class MapGeneration : MonoBehaviour
         if (File.Exists(Path))
         {
             string mapData = File.ReadAllText(Path);
-            boom(ConvertMapToTilemap(mapData));
+            ConvertMapToTilemap(mapData);
         }
     }
 
