@@ -583,9 +583,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyTileMap: {fileID: 1310306608}
   Playertile: {fileID: 11400000, guid: 410c5dd7fe60bf547b8d97c1758b45f3, type: 2}
-  groundTile: {fileID: 11400000, guid: cc0d5c4c233ee5b4da9aecdadedae806, type: 2}
-  wallTile: {fileID: 11400000, guid: 1f9a7584d44b146449703f355991e49a, type: 2}
   Turn: 0
+  PlayerPosition: {x: 0, y: 0, z: 0}
+  x: 1
+  y: 1
 --- !u!114 &1310306610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,6 +602,7 @@ MonoBehaviour:
   MyTileMap: {fileID: 1310306608}
   groundTile: {fileID: 11400000, guid: cc0d5c4c233ee5b4da9aecdadedae806, type: 2}
   wallTile: {fileID: 11400000, guid: 1f9a7584d44b146449703f355991e49a, type: 2}
+  Path: C:/Users/Shawn Bernard/Desktop/Unity Projects/2DRPG_Shawn-Bernard_20241204/Assets/Map/LevelOne.txt
 --- !u!114 &1310306611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,9 +616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyTileMap: {fileID: 1310306608}
-  Playertile: {fileID: 11400000, guid: 410c5dd7fe60bf547b8d97c1758b45f3, type: 2}
-  groundTile: {fileID: 11400000, guid: cc0d5c4c233ee5b4da9aecdadedae806, type: 2}
-  wallTile: {fileID: 11400000, guid: 1f9a7584d44b146449703f355991e49a, type: 2}
   enemyTile: {fileID: 11400000, guid: 12a2da2278f70a34fabf01a7056d8b7c, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
