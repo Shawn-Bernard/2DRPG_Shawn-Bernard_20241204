@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class HealthSystem
 {
@@ -9,18 +8,27 @@ public class HealthSystem
     public int health;
     public HealthSystem()
     {
-
         ResetGame();
     }
     public void TakeDamage(int damage)
     {
         health -= damage;
-
-        // Implement damage logic
+        if (health <= 0)
+        {
+            health = 0;
+        }
     }
     public void ResetGame()
     {
         // Reset all variables to default values
         health = 100;
+    }
+    public bool DIE()
+    {
+        if (health == 0)
+        {
+            return true;
+        }
+        return false;
     }
 }

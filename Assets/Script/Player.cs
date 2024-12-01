@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 public class Player : MonoBehaviour
@@ -10,12 +9,10 @@ public class Player : MonoBehaviour
     public HealthSystem healthSystem = new HealthSystem();
 
     public Tilemap MyTileMap;
-    public TileBase Playertile;
-    public Vector3Int PlayerPosition;
+    public TileBase playerTile;
+    public Vector3Int playerPosition;
 
-    public int x =1;
-    public int y =1;
-    int Damage = 20;
+    int damage = 20;
 
     public bool Turn = true;
 
@@ -25,7 +22,6 @@ public class Player : MonoBehaviour
     void Start()
     {
         player = this;
-        PlayerPosition = new Vector3Int(x, y, 0);
 
     }
 
@@ -33,68 +29,85 @@ public class Player : MonoBehaviour
     void Update()
     {
         Controller();
+        
     }
-    bool MovePlayer(Vector3Int Direction)
+    void InteractOrMove(Vector3Int Direction)
+    {
+        if(!MovePlayer(Direction, out TileBase checkTile))
+        {
+            if (checkTile == Enemy.enemy.enemyTile)
+            {
+                Enemy.enemy.healthSystem.TakeDamage(damage);
+            }
+        }
+    }
+    bool MovePlayer(Vector3Int Direction,out TileBase checkTile)
     {
         //Getting the player position and then add what direction were going and checking the position 
-        Vector3Int checkPosition = PlayerPosition + Direction;
-        checkPosition.z = 0;
-        //Checking tile at the check position
-        TileBase checkTile = MyTileMap.GetTile(checkPosition);
+        Vector3Int checkPosition = playerPosition + Direction;
 
-        if (MyTileMap.GetTile(checkPosition) != MapGeneration.Map.groundTile)
+        //So we can check the tile base layer
+        checkPosition.z = 0;
+
+        //Checking tile at the check position
+        checkTile = MyTileMap.GetTile(checkPosition);
+
+
+        if (checkTile != MapGeneration.Map.groundTile)
         {
             Debug.Log("Can't move to this tile");
             return false;
         }
-        else if (MyTileMap.GetTile(checkPosition) == Enemy.enemy.enemyTile)
+
+        //Swapping my player tile to the check tile
+        MyTileMap.SwapTile(playerTile, checkTile);
+
+        //Change it so we can check top layer
+        checkPosition.z = 1;
+
+        //Returning this tile to check the top layer 
+        checkTile = MyTileMap.GetTile(checkPosition);
+
+        if (checkTile == Enemy.enemy.enemyTile)
         {
-            healthSystem.TakeDamage(Damage);
+            Debug.Log("Theres a enemy here");
             return false;
         }
 
-        checkPosition.z = 1;
-
-        //Swapping my player tile to the check tile
-        MyTileMap.SwapTile(Playertile, checkTile);
-
         //Making my player position equal to check position
-        PlayerPosition = checkPosition;
+        playerPosition = checkPosition;
 
         //Placing my player tile at the new position and placing player
-        MyTileMap.SetTile(PlayerPosition,Playertile);
-
-        Debug.Log(PlayerPosition);
-        Debug.Log(healthSystem.health);
+        MyTileMap.SetTile(playerPosition,playerTile);
         return true;
     }
     void Controller()
     {
-        MyTileMap.SetTile(PlayerPosition, Playertile);
+        MyTileMap.SetTile(playerPosition, playerTile);
         
         if (Turn == true)
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
                 Turn = false;
-                MovePlayer(new Vector3Int(0, 1, 0));
-                //MyTileMap.SetTile(new Vector3Int(x, y, 0), Playertile);
+                InteractOrMove(new Vector3Int(0, 1, 0));
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 Turn = false;
-                MovePlayer(new Vector3Int(-1, 0, 0));
+                InteractOrMove(new Vector3Int(-1, 0, 0));
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 Turn = false;
-                MovePlayer(new Vector3Int(0, -1, 0));
+                InteractOrMove(new Vector3Int(0, -1, 0));
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 Turn = false;
-                MovePlayer(new Vector3Int(1, 0, 0));
-            } 
+                InteractOrMove(new Vector3Int(1, 0, 0));
+            }
+            
         }
     }
 }

@@ -11,6 +11,7 @@ public class MapGeneration : MonoBehaviour
 
     public TileBase groundTile;
     public TileBase wallTile;
+    public TileBase Tile;
     string tile;
     public static MapGeneration Map;
     public string Path = $"{Application.dataPath}/Map/LevelOne.txt";
@@ -41,7 +42,7 @@ public class MapGeneration : MonoBehaviour
             for (int x = 0; x < Map[y].Length; x++)
             {
                 tile = Map[y][x];
-                //Debug.Log("X:" + x + "\nY:" + y);
+
                 if (tile == '#')
                 {
                     MyTileMap.SetTile(new Vector3Int(x, y, 0), wallTile);

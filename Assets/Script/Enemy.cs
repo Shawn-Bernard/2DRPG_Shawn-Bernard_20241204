@@ -11,69 +11,110 @@ public class Enemy : MonoBehaviour
     public Tilemap MyTileMap;
     public TileBase enemyTile;
 
-    Vector3Int enemyPosition;
-
-    int enemyX = 5;
-    int enemyY = 5;
-    int range = 1;
-    int Damage = 10;
+    public Vector3Int enemyPosition;
+    private Vector3Int up = Vector3Int.up;
+    private Vector3Int left = Vector3Int.left;
+    private Vector3Int down = Vector3Int.down;
+    private Vector3Int right = Vector3Int.right;
+    int range = 2;
+    int damage = 10;
 
     public static Enemy enemy;
     // Start is called before the first frame update
     void Start()
     {
         enemy = this;
-        enemyPosition = new Vector3Int(enemyX, enemyY);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        if (Player.player.Turn == false)
+        if (healthSystem.DIE())
         {
-            if (RangeCheck(enemyPosition))
+            enemyPosition.z = 0;
+            MyTileMap.SetTile(enemyPosition, null);
+        }
+        else
+        {
+            MyTileMap.SetTile(enemyPosition, enemyTile);
+            if (Player.player.Turn == false)
             {
-                MoveEnemy(new Vector3Int(0, 0, 0));
-            }
-            else
-            {
-                int randomDirection = Random.RandomRange(0, 4);
-                switch (randomDirection)
+                if (RangeCheck())
                 {
-                    case 0:
-                        MoveEnemy(new Vector3Int(0, 1, 0));
-                        break;
-                    case 1:
-                        MoveEnemy(new Vector3Int(-1, 0, 0));
-                        break;
-                    case 2:
-                        MoveEnemy(new Vector3Int(0, -1, 0));
-                        break;
-                    case 3:
-                        MoveEnemy(new Vector3Int(1, 0, 0));
-                        break;
+                    AttackMode();
                 }
+                else
+                {
+                    int randomDirection = Random.RandomRange(0, 4);
+                    switch (randomDirection)
+                    {
+                        case 0:
+                            MoveEnemy(up);
+                            break;
+                        case 1:
+                            MoveEnemy(left);
+                            break;
+                        case 2:
+                            MoveEnemy(down);
+                            break;
+                        case 3:
+                            MoveEnemy(right);
+                            break;
+                    }
 
-                
+
+                }
+                Player.player.Turn = true;
+
+                Debug.Log($"Enemy Health: {healthSystem.health}");
             }
-            Player.player.Turn = true;
-            Debug.Log($"Enemy Position{enemyPosition}");
-            Debug.Log(healthSystem.health);
         }
 
     }
-    bool RangeCheck(Vector3Int EnemyPosition)
+    void AttackMode()
     {
-        //Left side equal to -1, middle equal to 0, right equal to 1
+        Vector3Int distance =  enemyPosition - Player.player.playerPosition;
+        if (distance == up || distance == left || distance == down || distance == right)
+        {
+            MoveEnemy(Vector3Int.zero);
+            Player.player.healthSystem.TakeDamage(damage);
+        }
+        else
+        {
+            //if the enemy y is less than the players y move up 
+            if (enemyPosition.y < Player.player.playerPosition.y)
+            {
+                MoveEnemy(up);//Move up
+            }
+            //if the enemy x is more than the players x move left 
+            else if (enemyPosition.x > Player.player.playerPosition.x)
+            {
+                MoveEnemy(left);//Move left
+            }
+            //if the enemy y is less than the players y move up 
+            else if (enemyPosition.y > Player.player.playerPosition.y)
+            {
+                MoveEnemy(down);//Move down
+            }
+            //if the enemy x is less than the player x move right
+            else if (enemyPosition.x < Player.player.playerPosition.x)
+            {
+                MoveEnemy(right);//Move right
+            }
+        }
+    }
+    bool RangeCheck()
+    {
+        //For loop that goes to left to right
         for (int x = -range; x <= range; x++)
         {
             for (int y = -range; y <= range; y++)
             {
                 //Than add my enemy position with my x and y
-                Vector3Int checkRange = EnemyPosition + new Vector3Int(x, y, 0);
+                Vector3Int checkRange = enemyPosition + new Vector3Int(x, y, 0);
 
-                if (checkRange == Player.player.PlayerPosition)
+                if (checkRange == Player.player.playerPosition)
                 {
                     Debug.Log($"Player found at {checkRange}");
                     return true;
@@ -87,25 +128,37 @@ public class Enemy : MonoBehaviour
         //Getting the enemy position and then add what direction were going and checking the position 
         Vector3Int checkPosition = enemyPosition + Direction;
 
-        Vector3Int distance = enemyPosition - Player.player.PlayerPosition;
-
+        //So we can check the tile base layer
         checkPosition.z = 0;
+
         //Checking tile at the check position
         TileBase checkTile = MyTileMap.GetTile(checkPosition);
 
-        if (MyTileMap.GetTile(checkPosition) != MapGeneration.Map.groundTile)
+
+        if (checkTile != MapGeneration.Map.groundTile)
         {
             Debug.Log("Can't move to this tile");
             return false;
         }
-        
-        checkPosition.z = 1;
-        //Swapping my enemy tile to the check tile
+
+        //Swapping my player tile to the check tile
         MyTileMap.SwapTile(enemyTile, checkTile);
-        //Making my player position equal to check position
+
+        //Change it so we can check top layer
+        checkPosition.z = 1;
+
+        //Returning this tile to check the top layer 
+        checkTile = MyTileMap.GetTile(checkPosition);
+
+        //Making my enemy position equal to check position
         enemyPosition = checkPosition;
+
         //Placing my enemy tile at the new position and placing enemy
         MyTileMap.SetTile(enemyPosition, enemyTile);
         return true;
+    }
+    void death()
+    {
+        
     }
 }
