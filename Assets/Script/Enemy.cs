@@ -33,7 +33,9 @@ public class Enemy : MonoBehaviour
         if (healthSystem.DIE())
         {
             enemyPosition.z = 0;
-            MyTileMap.SetTile(enemyPosition, null);
+            TileBase checkTile = MyTileMap.GetTile(enemyPosition);
+            MyTileMap.SwapTile(enemyTile, checkTile);
+
         }
         else
         {
@@ -62,14 +64,10 @@ public class Enemy : MonoBehaviour
                             MoveEnemy(right);
                             break;
                     }
-
-
                 }
-                Player.player.Turn = true;
-
-                Debug.Log($"Enemy Health: {healthSystem.health}");
             }
         }
+        Player.player.Turn = true;
 
     }
     void AttackMode()
@@ -79,6 +77,7 @@ public class Enemy : MonoBehaviour
         {
             MoveEnemy(Vector3Int.zero);
             Player.player.healthSystem.TakeDamage(damage);
+            Debug.Log($"Player hp {Player.player.healthSystem}");
         }
         else
         {

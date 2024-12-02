@@ -398,7 +398,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -423,7 +423,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10, z: -5}
+  m_LocalPosition: {x: 30.23, y: 14.95, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 785967739}
   - component: {fileID: 785967738}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PlayerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -568,7 +568,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'PlayerUI
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -885,6 +887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2a333925f48dc4289f1c6e6f7f06d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerUI: {fileID: 785967738}
   MyTileMap: {fileID: 1310306608}
   playerTile: {fileID: 11400000, guid: e8b29e30a66a6cb46a0fc51425dc6833, type: 2}
   playerPosition: {x: 1, y: 1, z: 1}
@@ -905,7 +908,6 @@ MonoBehaviour:
   groundTile: {fileID: 11400000, guid: cc0d5c4c233ee5b4da9aecdadedae806, type: 2}
   wallTile: {fileID: 11400000, guid: 1f9a7584d44b146449703f355991e49a, type: 2}
   Tile: {fileID: 0}
-  Path: C:/Users/Shawn Bernard/Desktop/Unity Projects/2DRPG_Shawn-Bernard_20241204/Assets/Map/LevelOne.txt
 --- !u!114 &1310306611
 MonoBehaviour:
   m_ObjectHideFlags: 0

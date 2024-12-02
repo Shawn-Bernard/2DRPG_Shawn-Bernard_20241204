@@ -14,7 +14,7 @@ public class MapGeneration : MonoBehaviour
     public TileBase Tile;
     string tile;
     public static MapGeneration Map;
-    public string Path = $"{Application.dataPath}/Map/LevelOne.txt";
+    string Path = $"{Application.dataPath}/Map/LevelOne.txt";
 
 
 

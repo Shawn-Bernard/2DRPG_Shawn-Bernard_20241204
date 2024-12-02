@@ -20,7 +20,6 @@ public class HealthSystem
     }
     public void ResetGame()
     {
-        // Reset all variables to default values
         health = 100;
     }
     public bool DIE()

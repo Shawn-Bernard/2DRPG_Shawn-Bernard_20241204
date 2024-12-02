@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,6 +8,8 @@ using UnityEngine.Tilemaps;
 public class Player : MonoBehaviour
 {
     public HealthSystem healthSystem = new HealthSystem();
+
+    public TMP_Text PlayerUI;
 
     public Tilemap MyTileMap;
     public TileBase playerTile;
@@ -28,6 +31,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayerUI.text = $"{healthSystem.health}";
         Controller();
         
     }
