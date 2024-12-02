@@ -10,10 +10,12 @@ public class Player : MonoBehaviour
     public HealthSystem healthSystem = new HealthSystem();
 
     public TMP_Text PlayerUI;
+    public GameObject GameOverScreen;
 
     public Tilemap MyTileMap;
     public TileBase playerTile;
     public Vector3Int playerPosition;
+    public Vector3Int StartPosition;
 
     int damage = 20;
 
@@ -27,13 +29,32 @@ public class Player : MonoBehaviour
         player = this;
 
     }
-
     // Update is called once per frame
     void Update()
     {
-        PlayerUI.text = $"{healthSystem.health}";
-        Controller();
+
+        UI();
+        if (healthSystem.Death())
+        {
+            onDeath();
+        }
+        else
+        {
+            Controller();
+        }
         
+        
+    }
+    void onDeath()
+    {
+        playerPosition.z = 0;
+        TileBase underTile = MyTileMap.GetTile(playerPosition);
+        MyTileMap.SwapTile(playerTile, underTile);
+        GameOverScreen.SetActive(true);
+    }
+    void UI()
+    {
+        PlayerUI.text = $" Health {healthSystem.health}";
     }
     void InteractOrMove(Vector3Int Direction)
     {
@@ -87,8 +108,8 @@ public class Player : MonoBehaviour
     }
     void Controller()
     {
+
         MyTileMap.SetTile(playerPosition, playerTile);
-        
         if (Turn == true)
         {
             if (Input.GetKeyDown(KeyCode.W))

@@ -11,27 +11,19 @@ public class MapGeneration : MonoBehaviour
 
     public TileBase groundTile;
     public TileBase wallTile;
-    public TileBase Tile;
+    TileBase Tile;
     string tile;
     public static MapGeneration Map;
     string Path = $"{Application.dataPath}/Map/LevelOne.txt";
 
-
-
     // Start is called before the first frame update
     void Start()
     {
+        Map = this;
         TryGetComponent<Tilemap>(out MyTileMap);
         LoadPremadeMap(Path);
-        Map = this;
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     public void ConvertMapToTilemap(string mapData)
     {
         string[] Map = mapData.Split("\n");
@@ -49,6 +41,11 @@ public class MapGeneration : MonoBehaviour
                 }
                 else if (tile == ' ')
                 {
+                    MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
+                }
+                else if (tile == '@')
+                {
+                    Player.player.playerPosition = new Vector3Int(x, y, 1);
                     MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
                 }
             }

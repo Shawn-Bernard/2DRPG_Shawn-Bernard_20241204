@@ -30,16 +30,17 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (healthSystem.DIE())
+
+        if (healthSystem.Death())
         {
             enemyPosition.z = 0;
-            TileBase checkTile = MyTileMap.GetTile(enemyPosition);
-            MyTileMap.SwapTile(enemyTile, checkTile);
+            TileBase underTile = MyTileMap.GetTile(enemyPosition);
+            MyTileMap.SwapTile(enemyTile, underTile);
 
         }
         else
         {
-            MyTileMap.SetTile(enemyPosition, enemyTile);
+            
             if (Player.player.Turn == false)
             {
                 if (RangeCheck())
@@ -48,7 +49,8 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    int randomDirection = Random.RandomRange(0, 4);
+                    //MyTileMap.SetTile(enemyPosition, enemyTile);
+                    int randomDirection = Random.Range(0, 4);
                     switch (randomDirection)
                     {
                         case 0:
@@ -105,17 +107,18 @@ public class Enemy : MonoBehaviour
     }
     bool RangeCheck()
     {
-        //For loop that goes to left to right
+        //For loop that looks for the player
         for (int x = -range; x <= range; x++)
         {
             for (int y = -range; y <= range; y++)
             {
+
                 //Than add my enemy position with my x and y
                 Vector3Int checkRange = enemyPosition + new Vector3Int(x, y, 0);
 
                 if (checkRange == Player.player.playerPosition)
                 {
-                    Debug.Log($"Player found at {checkRange}");
+                    //Debug.Log($"Player found at {checkRange}");
                     return true;
                 }
             }
@@ -133,14 +136,14 @@ public class Enemy : MonoBehaviour
         //Checking tile at the check position
         TileBase checkTile = MyTileMap.GetTile(checkPosition);
 
-
+        //If my check tile isn't a ground tile than returns false
         if (checkTile != MapGeneration.Map.groundTile)
         {
             Debug.Log("Can't move to this tile");
             return false;
         }
 
-        //Swapping my player tile to the check tile
+        //Swapping my enemy tile to the check tile
         MyTileMap.SwapTile(enemyTile, checkTile);
 
         //Change it so we can check top layer

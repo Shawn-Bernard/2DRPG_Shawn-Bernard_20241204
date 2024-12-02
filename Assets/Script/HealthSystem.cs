@@ -10,6 +10,10 @@ public class HealthSystem
     {
         ResetGame();
     }
+    public string ShowUI()
+    {
+        return $"[{health}]";
+    }
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -22,7 +26,7 @@ public class HealthSystem
     {
         health = 100;
     }
-    public bool DIE()
+    public bool Death()
     {
         if (health == 0)
         {
