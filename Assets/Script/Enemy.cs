@@ -13,7 +13,8 @@ public class Enemy : MonoBehaviour
     public Tilemap MyTileMap;
     public TileBase enemyTile;
 
-    public Vector3Int enemyPosition;
+    //enemy position wasn't static so it didn't exist
+    public static Vector3Int enemyPosition;
     private Vector3Int up = Vector3Int.up;
     private Vector3Int left = Vector3Int.left;
     private Vector3Int down = Vector3Int.down;
