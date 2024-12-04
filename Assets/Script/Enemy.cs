@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class Enemy : MonoBehaviour
 {
+    public GameObject winScreen;
     public HealthSystem healthSystem = new HealthSystem();
 
+    public TMP_Text enemyUI;
     public Tilemap MyTileMap;
     public TileBase enemyTile;
 
@@ -16,7 +19,7 @@ public class Enemy : MonoBehaviour
     private Vector3Int down = Vector3Int.down;
     private Vector3Int right = Vector3Int.right;
     int range = 2;
-    int damage = 10;
+    int damageAmount = 20;
 
     public static Enemy enemy;
     // Start is called before the first frame update
@@ -29,9 +32,12 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        UI();
+        //if the enemy death returns true than show win screen
         if (healthSystem.Death())
         {
+            winScreen.SetActive(true);
+            //getting the tile under the enemy and swap the tile with under tile
             enemyPosition.z = 0;
             TileBase underTile = MyTileMap.GetTile(enemyPosition);
             MyTileMap.SwapTile(enemyTile, underTile);
@@ -42,14 +48,16 @@ public class Enemy : MonoBehaviour
             MyTileMap.SetTile(enemyPosition,enemyTile);
             if (Player.player.Turn == false)
             {
+                //If this is returns true go into attack mode
                 if (RangeCheck())
                 {
                     AttackMode();
                 }
                 else
                 {
-                    //MyTileMap.SetTile(enemyPosition, enemyTile);
+                    //picking a random number
                     int randomDirection = Random.Range(0, 4);
+                    //if my random number is one of these go in that direction
                     switch (randomDirection)
                     {
                         case 0:
@@ -71,13 +79,19 @@ public class Enemy : MonoBehaviour
         Player.player.Turn = true;
 
     }
+    void UI()
+    {
+        enemyUI.text = $"Enemy | Health: {healthSystem.health} | Damage: {damageAmount}";
+    }
     void AttackMode()
     {
         Vector3Int distance =  enemyPosition - Player.player.playerPosition;
+        //Checking if the player is one tile up, left, down, right 
         if (distance == up || distance == left || distance == down || distance == right)
         {
+            //Not moving the enemy and then damage the player
             MoveEnemy(Vector3Int.zero);
-            Player.player.healthSystem.TakeDamage(damage);
+            Player.player.healthSystem.TakeDamage(damageAmount);
         }
         else
         {
@@ -105,7 +119,7 @@ public class Enemy : MonoBehaviour
     }
     bool RangeCheck()
     {
-        //For loop that looks for the player
+        //For loop that looks for the player by -2 tile to the left and also on the y
         for (int x = -range; x <= range; x++)
         {
             for (int y = -range; y <= range; y++)
@@ -113,10 +127,9 @@ public class Enemy : MonoBehaviour
 
                 //Than add my enemy position with my x and y
                 Vector3Int checkRange = enemyPosition + new Vector3Int(x, y, 0);
-
+                // if my player is in check range than return true
                 if (checkRange == Player.player.playerPosition)
                 {
-                    //Debug.Log($"Player found at {checkRange}");
                     return true;
                 }
             }

@@ -86,11 +86,6 @@ public class MapGeneration : MonoBehaviour
                     Player.player.playerPosition = new Vector3Int(x, y, 1);
                     MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
                 }
-                else if (tile == '!')
-                {
-                    Enemy.enemy.enemyPosition = new Vector3Int(x, y, 1);
-                    MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
-                }
             }
         }
 

@@ -9,12 +9,18 @@ public class Player : MonoBehaviour
 {
     public HealthSystem healthSystem = new HealthSystem();
 
-    public TMP_Text PlayerUI;
+    public TMP_Text playerUI;
     public GameObject GameOverScreen;
 
     public Tilemap MyTileMap;
     public TileBase playerTile;
     public Vector3Int playerPosition;
+
+    private Vector3Int up = Vector3Int.up;
+    private Vector3Int left = Vector3Int.left;
+    private Vector3Int down = Vector3Int.down;
+    private Vector3Int right = Vector3Int.right;
+
     int catusAmount = 10;
     int damageAmount = 5;
     int healAmount = 10;
@@ -34,10 +40,12 @@ public class Player : MonoBehaviour
     {
 
         UI();
+        //If the health system death method returns true do on death method
         if (healthSystem.Death())
         {
             onDeath();
         }
+        //if the player isn't dead than control the player
         else
         {
             Controller();
@@ -47,35 +55,43 @@ public class Player : MonoBehaviour
     }
     void onDeath()
     {
+        //Get what tile the player was under than swap the player with the under tile
         playerPosition.z = 0;
         TileBase underTile = MyTileMap.GetTile(playerPosition);
         MyTileMap.SwapTile(playerTile, underTile);
+        //Turning on the game over screen
         GameOverScreen.SetActive(true);
     }
     void UI()
     {
-        PlayerUI.text = $" Health: {healthSystem.health} | Damage: {damageAmount}";
+        playerUI.text = $"Player | Health: {healthSystem.health} | Damage: {damageAmount}";
     }
     void InteractOrMove(Vector3Int Direction)
     {
+        //If this returns false do these
         if(!MovePlayer(Direction, out TileBase checkTile))
         {
+            //If my check tile is the enemy deal damage to the enemy
             if (checkTile == Enemy.enemy.enemyTile)
             {
                 Enemy.enemy.healthSystem.TakeDamage(damageAmount);
             }
+            //If my check tile is the weapon tile add 5 to my damage amount
             else if (checkTile == MapGeneration.Map.weaponTile)
             {
+                // checking the position plus direction and setting that tile to nothing
                 Vector3Int checkPosition = playerPosition + Direction;
                 MyTileMap.SetTile(checkPosition, null);
                 damageAmount += 5;
             }
+            //If my check tile is the heal tile use health system method to heal 
             else if (checkTile == MapGeneration.Map.healTile)
-            {
+            {// checking the position plus direction and setting that tile to nothing
                 Vector3Int checkPosition = playerPosition + Direction;
                 MyTileMap.SetTile(checkPosition, null);
                 healthSystem.Heal(healAmount);
             }
+            //if my check tile is catus tile take damage using health system method
             else if (checkTile == MapGeneration.Map.catusTile)
             {
                 healthSystem.TakeDamage(catusAmount);
@@ -132,25 +148,26 @@ public class Player : MonoBehaviour
         MyTileMap.SetTile(playerPosition, playerTile);
         if (Turn == true)
         {
+            //if my player does any movement set turn to false and moving player
             if (Input.GetKeyDown(KeyCode.W))
             {
                 Turn = false;
-                InteractOrMove(new Vector3Int(0, 1, 0));
+                InteractOrMove(up);
             }
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 Turn = false;
-                InteractOrMove(new Vector3Int(-1, 0, 0));
+                InteractOrMove(left);
             }
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 Turn = false;
-                InteractOrMove(new Vector3Int(0, -1, 0));
+                InteractOrMove(down);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 Turn = false;
-                InteractOrMove(new Vector3Int(1, 0, 0));
+                InteractOrMove(right);
             }
             
         }

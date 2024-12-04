@@ -12,6 +12,7 @@ public class HealthSystem
     }
     public void TakeDamage(int damage)
     {
+        //Taking away health and if my health tries to go under 0 set it to 0
         health -= damage;
         if (health <= 0)
         {
@@ -32,6 +33,7 @@ public class HealthSystem
     }
     public bool Death()
     {
+        //if the health is 0 than return true else returns false 
         if (health == 0)
         {
             return true;
