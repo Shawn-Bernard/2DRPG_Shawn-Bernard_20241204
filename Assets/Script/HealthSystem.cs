@@ -10,16 +10,20 @@ public class HealthSystem
     {
         ResetGame();
     }
-    public string ShowUI()
-    {
-        return $"[{health}]";
-    }
     public void TakeDamage(int damage)
     {
         health -= damage;
         if (health <= 0)
         {
             health = 0;
+        }
+    }
+    public void Heal(int hp)
+    {
+        health += hp;
+        if (health >= 100)//if health is greater than 100
+        {
+            health = 100; //Set to 100
         }
     }
     public void ResetGame()

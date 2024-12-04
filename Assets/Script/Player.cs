@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
     public Tilemap MyTileMap;
     public TileBase playerTile;
     public Vector3Int playerPosition;
-    public Vector3Int StartPosition;
-
-    int damage = 20;
+    int catusAmount = 10;
+    int damageAmount = 5;
+    int healAmount = 10;
 
     public bool Turn = true;
 
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     }
     void UI()
     {
-        PlayerUI.text = $" Health {healthSystem.health}";
+        PlayerUI.text = $" Health: {healthSystem.health} | Damage: {damageAmount}";
     }
     void InteractOrMove(Vector3Int Direction)
     {
@@ -62,7 +62,23 @@ public class Player : MonoBehaviour
         {
             if (checkTile == Enemy.enemy.enemyTile)
             {
-                Enemy.enemy.healthSystem.TakeDamage(damage);
+                Enemy.enemy.healthSystem.TakeDamage(damageAmount);
+            }
+            else if (checkTile == MapGeneration.Map.weaponTile)
+            {
+                Vector3Int checkPosition = playerPosition + Direction;
+                MyTileMap.SetTile(checkPosition, null);
+                damageAmount += 5;
+            }
+            else if (checkTile == MapGeneration.Map.healTile)
+            {
+                Vector3Int checkPosition = playerPosition + Direction;
+                MyTileMap.SetTile(checkPosition, null);
+                healthSystem.Heal(healAmount);
+            }
+            else if (checkTile == MapGeneration.Map.catusTile)
+            {
+                healthSystem.TakeDamage(catusAmount);
             }
         }
     }
@@ -83,6 +99,10 @@ public class Player : MonoBehaviour
             Debug.Log("Can't move to this tile");
             return false;
         }
+        else if (checkTile == MapGeneration.Map.catusTile)
+        {
+            return false;
+        }
 
         //Swapping my player tile to the check tile
         MyTileMap.SwapTile(playerTile, checkTile);
@@ -93,9 +113,9 @@ public class Player : MonoBehaviour
         //Returning this tile to check the top layer 
         checkTile = MyTileMap.GetTile(checkPosition);
 
-        if (checkTile == Enemy.enemy.enemyTile)
+        if (checkTile == Enemy.enemy.enemyTile || checkTile == MapGeneration.Map.weaponTile || checkTile == MapGeneration.Map.healTile)
         {
-            Debug.Log("Theres a enemy here");
+            Debug.Log("Theres a Interactable tile here ");
             return false;
         }
 

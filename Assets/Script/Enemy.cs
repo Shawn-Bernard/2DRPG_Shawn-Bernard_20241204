@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Tilemaps;
 
 public class Enemy : MonoBehaviour
@@ -40,7 +39,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            
+            MyTileMap.SetTile(enemyPosition,enemyTile);
             if (Player.player.Turn == false)
             {
                 if (RangeCheck())
@@ -79,7 +78,6 @@ public class Enemy : MonoBehaviour
         {
             MoveEnemy(Vector3Int.zero);
             Player.player.healthSystem.TakeDamage(damage);
-            Debug.Log($"Player hp {Player.player.healthSystem}");
         }
         else
         {
@@ -158,9 +156,5 @@ public class Enemy : MonoBehaviour
         //Placing my enemy tile at the new position and placing enemy
         MyTileMap.SetTile(enemyPosition, enemyTile);
         return true;
-    }
-    void death()
-    {
-        
     }
 }
