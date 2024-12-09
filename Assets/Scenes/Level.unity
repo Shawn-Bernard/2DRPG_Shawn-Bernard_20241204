@@ -654,7 +654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 932dc4b7807009f478efe5d7cbab2402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialMenu: {fileID: 1838209314}
+  tutorialMenu: {fileID: 1838209314}
+  gameOverScreen: {fileID: 1557214123}
 --- !u!1 &450977779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,7 +1009,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 361932450}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: Quit
+        m_MethodName: Menu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1942,7 +1943,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 932dc4b7807009f478efe5d7cbab2402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TutorialMenu: {fileID: 0}
+  tutorialMenu: {fileID: 0}
+  gameOverScreen: {fileID: 0}
 --- !u!114 &868731423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3408,7 +3410,6 @@ MonoBehaviour:
   enemyUI: {fileID: 1469435103}
   MyTileMap: {fileID: 1310306608}
   enemyTile: {fileID: 11400000, guid: e8b29e30a66a6cb46a0fc51425dc6833, type: 2}
-  enemyPosition: {x: 31, y: 2, z: 1}
 --- !u!1 &1353913511
 GameObject:
   m_ObjectHideFlags: 0

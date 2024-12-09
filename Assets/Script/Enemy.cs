@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     private Vector3Int down = Vector3Int.down;
     private Vector3Int right = Vector3Int.right;
     int range = 2;
-    int damageAmount = 20;
+    int damageAmount = 10;
 
     public static Enemy enemy;
     // Start is called before the first frame update

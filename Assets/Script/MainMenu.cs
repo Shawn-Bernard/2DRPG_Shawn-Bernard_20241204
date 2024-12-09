@@ -5,18 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject TutorialMenu;
+    public GameObject tutorialMenu;
+    public GameObject gameOverScreen;
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
-            TutorialMenu.SetActive(true);
+            tutorialMenu.SetActive(true);
+        }
+        if (gameOverScreen.activeSelf == true || tutorialMenu.activeSelf == true)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
         }
     }
     public void closeTutorial()
     {
-        TutorialMenu.SetActive(false);
+        tutorialMenu.SetActive(false);
     }
     public void PlayGame()
     {
