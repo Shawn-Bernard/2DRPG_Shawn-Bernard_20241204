@@ -4,37 +4,40 @@ using UnityEngine;
 
 public class HealthSystem
 {
-    public static HealthSystem healthSystem;
-    public int health;
+    private int health;
+    private int maxHealth;
+
+    public int Health
+    {
+        get { return health; }
+        set { health = Mathf.Clamp(value, 0, maxHealth); }
+    }
+
+    public int MaxHealth
+    {
+        get { return maxHealth; }
+        set { maxHealth = Mathf.Max(1, value);}
+    }
     public HealthSystem()
     {
         ResetGame();
     }
     public void TakeDamage(int damage)
     {
-        //Taking away health and if my health tries to go under 0 set it to 0
-        health -= damage;
-        if (health <= 0)
-        {
-            health = 0;
-        }
+        Health -= damage;
     }
     public void Heal(int hp)
     {
-        health += hp;
-        if (health >= 100)//if health is greater than 100
-        {
-            health = 100; //Set to 100
-        }
+        Health += hp;
     }
     public void ResetGame()
     {
-        health = 100;
+        Health = MaxHealth;
     }
     public bool Death()
     {
         //if the health is 0 than return true else returns false 
-        if (health == 0)
+        if (Health == 0)
         {
             return true;
         }

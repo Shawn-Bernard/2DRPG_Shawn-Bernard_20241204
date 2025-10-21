@@ -4,10 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
-public class Player : MonoBehaviour
+public class Player : Actor
 {
-    public HealthSystem healthSystem = new HealthSystem();
+    //public HealthSystem healthSystem = new HealthSystem();
 
     public TMP_Text playerUI;
     public GameObject GameOverScreen;
@@ -22,23 +21,14 @@ public class Player : MonoBehaviour
     private Vector3Int right = Vector3Int.right;
 
     int catusAmount = 10;
-    int damageAmount = 5;
     int healAmount = 10;
 
     public bool Turn = true;
 
-    public static Player player;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        player = this;
-
-    }
+    public Enemy enemy;
     // Update is called once per frame
     void Update()
     {
-
         UI();
         //If the health system death method returns true do on death method
         if (healthSystem.Death())
@@ -50,8 +40,6 @@ public class Player : MonoBehaviour
         {
             Controller();
         }
-        
-        
     }
     void onDeath()
     {
@@ -62,19 +50,15 @@ public class Player : MonoBehaviour
         //Turning on the game over screen
         GameOverScreen.SetActive(true);
     }
-    void UI()
-    {
-        playerUI.text = $"Player | Health: {healthSystem.health} | Damage: {damageAmount}";
-    }
     void InteractOrMove(Vector3Int Direction)
     {
         //If this returns false do these
         if(!MovePlayer(Direction, out TileBase checkTile))
         {
             //If my check tile is the enemy deal damage to the enemy
-            if (checkTile == Enemy.enemy.enemyTile)
+            if (checkTile == enemy.enemyTile)
             {
-                Enemy.enemy.healthSystem.TakeDamage(damageAmount);
+                enemy.healthSystem.TakeDamage(Damage);
             }
             //If my check tile is the weapon tile add 5 to my damage amount
             else if (checkTile == MapGeneration.Map.weaponTile)
@@ -82,7 +66,7 @@ public class Player : MonoBehaviour
                 // checking the position plus direction and setting that tile to nothing
                 Vector3Int checkPosition = playerPosition + Direction;
                 MyTileMap.SetTile(checkPosition, null);
-                damageAmount += 5;
+                Damage += 5;
             }
             //If my check tile is the heal tile use health system method to heal 
             else if (checkTile == MapGeneration.Map.healTile)
@@ -129,7 +113,7 @@ public class Player : MonoBehaviour
         //Returning this tile to check the top layer 
         checkTile = MyTileMap.GetTile(checkPosition);
 
-        if (checkTile == Enemy.enemy.enemyTile || checkTile == MapGeneration.Map.weaponTile || checkTile == MapGeneration.Map.healTile)
+        if (checkTile == enemy.enemyTile || checkTile == MapGeneration.Map.weaponTile || checkTile == MapGeneration.Map.healTile)
         {
             Debug.Log("Theres a Interactable tile here ");
             return false;

@@ -1,32 +1,39 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.IO;
-using System.IO.Compression;
 
 public class MapGeneration : MonoBehaviour
 {
+    public GameSettings settings;
+    private MapSetting mapSetting;
+    private TileData[] tilesData;
+
+    public Player player;
+    public Enemy enemy;
+
     public TextAsset MapOne;
     public TextAsset MapTwo;
     public TextAsset MapThree;
 
     public Tilemap MyTileMap;
-    public TileBase groundTile;
-    public TileBase catusTile;
-    public TileBase wallTile;
-    public TileBase weaponTile;
-    public TileBase healTile;
-    TileBase Tile;
-    string tile;
+
+    [HideInInspector]
+    public TileBase groundTile,wallTile, catusTile,weaponTile,healTile;
+
     public static MapGeneration Map;
-    string Path = $"{Application.dataPath}/Map/LevelOne.txt";
-    //string Paths = $"{Application}/Map/LevelOne.txt";
 
+    private Dictionary<char, TileBase> tileBaseDictionary;
 
-    // Start is called before the first frame update
+    private char[] symbols = { ' ', '#', '*', '^', '+' };
+
+    public TextAsset MapSettingJson;
+
     void Start()
     {
+        LoadMap();
 
         Map = this;
         TryGetComponent<Tilemap>(out MyTileMap);
@@ -83,17 +90,16 @@ public class MapGeneration : MonoBehaviour
                 }
                 else if (tile == '@')//Player position
                 {
-                    Player.player.playerPosition = new Vector3Int(x, y, 1);
+                    player.playerPosition = new Vector3Int(x, y, 1);
                     MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
                 }
                 else if (tile == '!')//Enemy position
                 {
-                    Enemy.enemyPosition = new Vector3Int(x, y, 1);
+                    enemy.enemyPosition = new Vector3Int(x, y, 1);
                     MyTileMap.SetTile(new Vector3Int(x, y, 0), groundTile);
                 }
             }
         }
-
     }
     public void LoadPremadeMap(string Path)
     {
@@ -104,5 +110,57 @@ public class MapGeneration : MonoBehaviour
             ConvertMapToTilemap(mapData);
         }
     }
+
+    /// <summary>
+    /// Loads json file text asset and apply tile data from map setting to map gen data
+    /// </summary>
+    private void LoadMap()
+    {
+        if (MapSettingJson != null)
+        {
+            mapSetting = settings.GetDataFromTextJsonFile<MapSetting>(MapSettingJson);
+            tilesData = mapSetting.tileData;
+        }
+        else
+        {
+            Debug.Log("TextAsset is null! :(");
+        }
+
+        InitializeTileData();
+    }
+
+    /// <summary>
+    ///  Uses tile data to get tile base 
+    /// </summary>
+    private void InitializeTileData()
+    {
+        if (tilesData != null)
+        {
+            tileBaseDictionary = new Dictionary<char, TileBase>();
+
+            for (int i = 0; i < mapSetting.tileData.Length; i++)
+            {
+                TileData tileInfo = tilesData[i];
+                //Gets a return tile base from json file
+                TileBase tile = settings.GetTileBase(tileInfo.tilePath);
+                if (tile != null)
+                {
+                    char symbol = symbols[tileInfo.indexID];
+                    tileBaseDictionary[symbol] = tile;
+                }
+                else
+                {
+                    Debug.Log($"TileBase {tileInfo.tilePath} not found");
+                }
+            }
+            //Apply my tiles base
+            groundTile = tileBaseDictionary[' '];
+            wallTile = tileBaseDictionary['#'];
+            catusTile = tileBaseDictionary['*'];
+            weaponTile = tileBaseDictionary['^'];
+            healTile = tileBaseDictionary['+'];
+        }
+    }
+
 
 }

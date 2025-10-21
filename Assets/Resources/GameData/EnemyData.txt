@@ -1,0 +1,6 @@
+{
+    "name": "Enemy",
+    "maxHealth": 100,
+    "health": 100,
+    "damage": 10
+}

@@ -4,31 +4,22 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Actor
 {
     public GameObject winScreen;
-    public HealthSystem healthSystem = new HealthSystem();
 
     public TMP_Text enemyUI;
     public Tilemap MyTileMap;
     public TileBase enemyTile;
 
-    //enemy position wasn't static so it didn't exist
-    public static Vector3Int enemyPosition;
+    public Vector3Int enemyPosition;
     private Vector3Int up = Vector3Int.up;
     private Vector3Int left = Vector3Int.left;
     private Vector3Int down = Vector3Int.down;
     private Vector3Int right = Vector3Int.right;
-    int range = 2;
-    int damageAmount = 10;
+    private int range = 2;
 
-    public static Enemy enemy;
-    // Start is called before the first frame update
-    void Start()
-    {
-        enemy = this;
-        
-    }
+    public Player player;
 
     // Update is called once per frame
     void Update()
@@ -47,7 +38,7 @@ public class Enemy : MonoBehaviour
         else
         {
             MyTileMap.SetTile(enemyPosition,enemyTile);
-            if (Player.player.Turn == false)
+            if (player.Turn == false)
             {
                 //If this is returns true go into attack mode
                 if (RangeCheck())
@@ -77,42 +68,38 @@ public class Enemy : MonoBehaviour
                 }
             }
         }
-        Player.player.Turn = true;
+        player.Turn = true;
 
-    }
-    void UI()
-    {
-        enemyUI.text = $"Enemy | Health: {healthSystem.health} | Damage: {damageAmount}";
     }
     void AttackMode()
     {
-        Vector3Int distance =  enemyPosition - Player.player.playerPosition;
+        Vector3Int distance =  enemyPosition - player.playerPosition;
         //Checking if the player is one tile up, left, down, right 
         if (distance == up || distance == left || distance == down || distance == right)
         {
             //Not moving the enemy and then damage the player
             MoveEnemy(Vector3Int.zero);
-            Player.player.healthSystem.TakeDamage(damageAmount);
+            player.healthSystem.TakeDamage(Damage);
         }
         else
         {
             //if the enemy y is less than the players y move up 
-            if (enemyPosition.y < Player.player.playerPosition.y)
+            if (enemyPosition.y < player.playerPosition.y)
             {
                 MoveEnemy(up);//Move up
             }
             //if the enemy x is more than the players x move left 
-            else if (enemyPosition.x > Player.player.playerPosition.x)
+            else if (enemyPosition.x > player.playerPosition.x)
             {
                 MoveEnemy(left);//Move left
             }
             //if the enemy y is less than the players y move up 
-            else if (enemyPosition.y > Player.player.playerPosition.y)
+            else if (enemyPosition.y > player.playerPosition.y)
             {
                 MoveEnemy(down);//Move down
             }
             //if the enemy x is less than the player x move right
-            else if (enemyPosition.x < Player.player.playerPosition.x)
+            else if (enemyPosition.x < player.playerPosition.x)
             {
                 MoveEnemy(right);//Move right
             }
@@ -129,7 +116,7 @@ public class Enemy : MonoBehaviour
                 //Than add my enemy position with my x and y
                 Vector3Int checkRange = enemyPosition + new Vector3Int(x, y, 0);
                 // if my player is in check range than return true
-                if (checkRange == Player.player.playerPosition)
+                if (checkRange == player.playerPosition)
                 {
                     return true;
                 }

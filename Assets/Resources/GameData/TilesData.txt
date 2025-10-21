@@ -1,0 +1,29 @@
+{
+    "tileData": 
+  [
+    { "tileName": "Ground",
+    "indexID": 0,
+    "tilePath": "tilemap_0" 
+    },
+
+    { "tileName": "Wall",
+    "indexID": 1,
+    "tilePath": "tilemap_14" 
+    },
+
+    { "tileName": "Cactus",
+    "indexID": 2,
+    "tilePath": "tilemap_32" 
+    },
+
+    { "tileName": "Weapon",
+    "indexID": 3,
+    "tilePath": "tilemap_126" 
+    },
+
+    { "tileName": "HealthPickup",
+    "indexID": 4,
+    "tilePath": "tilemap_129" 
+    }
+  ]
+}

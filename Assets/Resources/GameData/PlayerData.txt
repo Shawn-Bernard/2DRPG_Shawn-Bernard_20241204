@@ -1,0 +1,6 @@
+{
+    "name": "Player",
+    "maxHealth": 100,
+    "health": 100,
+    "damage": 20
+}
